@@ -1,0 +1,48 @@
+class Nozzle
+
+  attr_accessor :pi_s, :t, :k, :q_t, :r, :pi_kr
+  def initialize(pi_s, t, k, q_t, mah, ta)
+    @pi_s = pi_s
+    @t = t
+    @k = k
+    @q_t = q_t
+    @mah = mah
+    @ta = ta
+    @pi_kr
+  end
+
+
+  def get_traction1
+    pi_kr = 1.89
+    return 0.1 if t < 0
+    return 0.1 if t > 3000
+    v = @mah*sqrt(1.4*287.2*@t)
+    if ((@pi_s < 1.85)&(@pi_s > 1.0))
+      cc = 2*@k/(@k-1)
+      cc *= 289*@t*(1-1/(@pi_s**((@k-1)/@k)))
+      return 0.1 if cc < 10
+      cc = sqrt(cc)
+      
+      rud = (1+@q_t)*cc - v
+      return rud
+    else
+      #сужающееся сопло
+      cc = 2*@k/(@k-1)
+      cc *= 289*@t
+      cc = sqrt(cc)
+      t_s = @t - ((@k-1)/(@k*289))*cc*cc/2
+      rud = (1+@q_t)*cc + (289*t_s/cc) - v/(1+@q_t)
+      return rud
+    end
+  end
+
+  def get_traction2
+    v = @mah*sqrt(1.4*287.2*@t)
+    cc = 2*@k/(@k-1)
+    cc *= 289*@t
+    cc = sqrt(cc)
+    t_s = @t - ((@k-1)/(@k*289))*cc*cc/2
+    rud = (1+@q_t)*cc + (289*t_s/cc) - v/(1+@q_t)
+    return rud
+  end
+end
