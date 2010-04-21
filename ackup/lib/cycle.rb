@@ -6,10 +6,10 @@ require 'nozzle.rb'
 require 'cycle.rb'
 
 class Optimum
-  attr_accessor :cr, :piks, :r, :m, :pi_vl
-  def initialize(cr, piks, r, m, pi_vl)
+  attr_accessor :cr, :piks, :r, :m
+  def initialize(cr, piks, r, m)
     @cr = cr
-    @pi_vl = pi_vl
+    #@pi_vl = pi_vl
     @piks = piks
     @r = r
     @m = m
@@ -27,7 +27,7 @@ class Optimum
 end
 
 class Cycle
-  attr_accessor :tg, :pa, :m, :r_tyag, :mah, :ta, :opt, :c, :v, :p, :tc, :tv, :n1, :n2, :pi_pp, :r2, :r1
+  attr_accessor :tg, :pa, :m, :r_tyag, :mah, :ta, :opt, :c, :v, :p, :tc, :tv, :n1, :n2, :pi_pp
   def initialize(tg,pa,m, r_tyag,mah,ta, pi_pp)
     @tg = tg
     @pa = pa
@@ -48,11 +48,11 @@ class Cycle
     sigma_vh = 0.985
     sigma_ll = 0.99
     sigma_ks = 0.99
-    eta_k = 0.84
+    eta_k = 0.86
     @eta_t = 0.9
     eta_l = 0.9
     eta_g = 0.985
-    eta_vl = 0.88
+    eta_vl = 0.85
     eta_m = 0.985
     eta_red = 0.995
     t_l_dop = 1200
@@ -100,14 +100,13 @@ class Cycle
     return @pi_vl
   end
 
-  def calc(piks, pi_vl)
+  def calc(piks)
     #piks = суммарная степень повышения давления
     sigma_g = 0.965
     g_ohl = 0.25
     c_t_k = 200.0
     t0 = 288.3
     qn = 43000000
-    l0 = 14.7
     sigma_vh = 0.9856
     sigma_ll = 0.99
     sigma_ks = 0.99
@@ -131,38 +130,35 @@ class Cycle
     p_vh *= sigma_vh
     t_vh = @ta*(1 + ((@k_vl-1)/2)*@mah**2)
     #считаем общее Пи_турбин
-    #pi_s1 = 1.2
-    #pi_t_sum = piks*sigma_g/pi_s1
+    pi_s1 = 1.8
+    pi_t_sum = piks*sigma_g/pi_s1
     #pi_vl = (1-g_ohl)*@cp_g*@tg*(1-pi_t_sum**((1-@k_g)/@k_g)) - @cp_v*@ta*(piks**((@k_v-1)/@k_v)-1)/eta_k
     #pi_vl /= (@m)*@cp_v*@ta/eta_vl
     #pi_vl = (1 + pi_vl)**(@k_v/(@k_v-1))
-    #pi_vl = 1.4
+    pi_vl = pre(piks)
 
 
-    v = Compressor.new(p_vh, t_vh, pi_vl, 0.88, @m)
+    v = Compressor.new(p_vh, t_vh, pi_vl, 0.8, @m)
     
-    p = Compressor.new(v.p_k, v.t_k, @pi_pp, 0.84, 0)
+    p = Compressor.new(v.p_k, v.t_k, @pi_pp, 0.83, 0)
     @p = p
-    c = Compressor.new(p.p_k, p.t_k, piks/(pi_vl*@pi_pp), 0.84, 0)
+    c = Compressor.new(p.p_k, p.t_k, piks/(pi_vl*@pi_pp), 0.86, 0)
 
     vent = []
     compr = []
     vent << v
-    vent << p
     compr << c
     p_g = c.p_k*sigma_ks
-    q_ks = (get_sr_cp(@tg,1)*@tg-get_sr_cp(c.t_k,10000000000)*c.t_k )/(qn*eta_g + get_sr_cp(c.t_k,10000000000)*c.t_k-(get_sr_cp(@tg,1)*@tg  - get_sr_cp(t0,1)*t0))
-    #puts "q_ks = "+q_ks.to_s
-    #alfa = get_alfa(c.t_k)
-    alfa = 1/(q_ks*l0)
+    q_ks = (get_sr_cp(@tg,1)*@tg-get_sr_cp(c.t_k,10000000000)*c.t_k - (get_sr_cp(@tg,1)-get_sr_cp(c.t_k,10000000000))*t0)/(qn*eta_g-(get_sr_cp(@tg,1)*@tg - get_sr_cp(t0,1)*t0))
+    alfa = get_alfa(c.t_k)
     teta = (@tg-t_l_dop)/(@tg-c.t_k)
     #g_ohl = 5.9*teta/((1-1.42*teta))
     #g_ohl = g_ohl/100
     #g_ohl = 0 if g_ohl < 0
     #g_ohl = 0.3 if g_ohl > 0.3
-    g_ohl = 0.2
+    g_ohl = 0.25
     tc = Turbine.new(p_g, @tg, eta_t, compr, q_ks, alfa, 0, g_ohl, eta_m)
-    tv = Turbine.new(tc.p_t, tc.t_t, eta_t, vent, q_ks, alfa, @m, 0, eta_m)
+    tv = Turbine.new(tc.p_t, tc.t_t, eta_t, vent, q_ks, alfa, @m, g_ohl/2, eta_m)
     p_t = tv.p_t
     q_t = q_ks*(1-g_ohl)
     pi_s1 = p_t/@pa
@@ -173,18 +169,10 @@ class Cycle
     @tv = tv
     @n1 = Nozzle.new(pi_s1, tv.t_t, tv.k, q_t, @mah, @ta)
     rud1 = @n1.get_traction1
-    @r1 = rud1
-    
-   # puts rud1
-    @n2 = Nozzle.new(pi_vl*sigma_ll, v.t_k, v.k, 0, @mah, @ta)
-    rud2 = @n2.get_traction1
-    #puts rud2
-    @r2 = rud2
+    @n2 = Nozzle.new(pi_vl, v.t_k, v.k, 0, @mah, @ta)
+    rud2 = @n2.get_traction2
     rud = (rud1 + @m*rud2)/(1.0+@m)
     cr = 3600.0*q_t/((1.0+@m)*rud)
-    cr = 1 if pi_s1 > 3
-    cr = 1 if pi_s1 < 1.001
-    rud = 1 if cr == 1
     return cr,rud
   end
 end

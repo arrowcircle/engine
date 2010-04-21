@@ -2,7 +2,7 @@ include Math
 require 'properties.rb'
 require 'compressor.rb'
 class Turbine
-  attr_accessor :eta, :p_g, :t_g, :eta, :l_t, :cp, :k, :pi_t, :p_t, :t_t, :g_ohl, :l_t, :q_ks
+  attr_accessor :eta, :p_g, :t_g, :eta, :l_t, :cp, :k, :pi_t, :p_t, :t_t, :g_ohl, :l_t
 
   def initialize(p_g, t_g, eta, comps, q_ks, alfa, m, g_ohl, eta_m = 0.985)
     #raise "invalid compressor input" if comps.class != Compressor
@@ -13,7 +13,6 @@ class Turbine
     @cp = 1200.0
     @t_t = 100.0
     @compr_work = 0
-    @q_ks = q_ks
     for c in comps do
         @compr_work += c.l_k
      end
@@ -53,7 +52,6 @@ class Turbine
     puts "Cp: "+@cp.to_s
     puts "k: "+@k.to_s
     puts "L_t: "+@l_t.to_s
-    puts "q_ks: "+@q_ks.to_s
     puts "########"
   end
 end
