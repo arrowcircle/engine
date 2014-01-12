@@ -18,7 +18,6 @@ class Gtengine::Simple::PikOptimizer
       c = Gtengine::Simple::Cycle.new(air, pik, t_g) 
       @cycles << c if c.burner.q_ks
     rescue
-      
     end
   end
 
@@ -27,9 +26,7 @@ class Gtengine::Simple::PikOptimizer
   end
 
   def info
-    @cycles.each do |c|
-      puts "pi_k: #{c.pi_k}, q_ks: #{c.q_ks}"
-    end
+    @cycles.each { |c| c.info } 
     puts "Optimal pi_k: #{optimal.pi_k}, q_ks: #{optimal.q_ks}"
   end
 end

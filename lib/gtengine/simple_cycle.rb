@@ -26,8 +26,7 @@ module Gtengine
       end
 
       def info
-        puts "== Cycle info"
-        puts "pi_k: #{@compressor.pi_k}, q_ks: #{q_ks}"
+        puts "== Cycle info: pi_k: #{@compressor.pi_k}, q_ks: #{q_ks}"
       end
     end
   end
