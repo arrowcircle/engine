@@ -36,12 +36,36 @@ class Gtengine::Gas
     end
 
     def high_temperature_cp
-      (0.0267 / alfa + 0.26 + (0.032 + 0.0133 / alfa) * (0.001 * 1.176 * t - 0.88235) - (0.374 * 0.01 + 0.0094 / (alfa ** 2.0 + 10.0)) * (5.5556 * 0.000001 * t ** 2.0 - 1.3056 * 0.01 * t + 6.67)) * 4187.0
+      (first_high_cp - second_high_cp * third_high_cp) * 4187.0
+    end
+
+    def first_high_cp
+      0.0267 / alfa + 0.26 + (0.032 + 0.0133 / alfa) * (0.001 * 1.176 * t - 0.88235)
+    end
+
+    def second_high_cp
+      0.374 * 0.01 + 0.0094 / (alfa ** 2.0 + 10.0)
+    end
+
+    def third_high_cp
+      5.5556 * 0.000001 * t ** 2.0 - 1.3056 * 0.01 * t + 6.67
     end
 
     def low_temperature_cp
-      (0.0174 / alfa + 0.2407 + (0.0193 + 0.0093 / alfa) * (0.001 * 2.5 * t - 0.875) + (0.002 - 0.001 * 1.056 / (alfa - 0.2)) * (2.5 * 0.00001 * t ** 2.0 - 0.0275 * t + 6.5625)) * 4187.0
+      (first_low_cp + second_low_cp * third_low_cp) * 4187.0
     end    
+
+    def first_low_cp
+      0.0174 / alfa + 0.2407 + (0.0193 + 0.0093 / alfa) * (0.001 * 2.5 * t - 0.875)
+    end
+
+    def second_low_cp
+      0.002 - 0.001 * 1.056 / (alfa - 0.2)
+    end
+
+    def third_low_cp
+      2.5 * 0.00001 * t ** 2.0 - 0.0275 * t + 6.5625
+    end
 
     def high_temperature_average_cp
       (((1.25 + 2.2 * alfa) / (alfa * 100000.0)) * (t + 450.0) + 0.218) * 4187.0
