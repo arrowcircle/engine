@@ -1,7 +1,4 @@
-# coding: utf-8
-class PikOptimizer
-  require_relative 'cycle'
-
+class Gtengine::Simple::PikOptimizer
   attr_accessor :start_pik, :end_pik, :t_g, :step, :optimum, :cycles, :air
 
   def initialize air, start_pik, end_pik, t_g, step=1

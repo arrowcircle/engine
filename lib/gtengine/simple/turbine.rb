@@ -1,7 +1,4 @@
-# coding: utf-8
-require_relative '../gas'
-
-class Cycle::Turbine
+class Gtengine::Simple::Turbine
 
   attr_accessor :burner, :l_k, :kpd, :average, :output
 
@@ -13,7 +10,7 @@ class Cycle::Turbine
     @burner = burner
     @l_k = l_k
     @kpd = kpd.to_f
-    @average = Gas.new t_vh, p_vh
+    @average = Gtengine::Gas.new t_vh, p_vh
     cycle
   end
 
@@ -40,7 +37,7 @@ class Cycle::Turbine
     5.times do
       update_average
     end
-    @output = Gas.new t_vyh, p_vyh
+    @output = Gtengine::Gas.new t_vyh, p_vyh
   end
 
   def update_average

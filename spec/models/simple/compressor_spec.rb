@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Cycle::Compressor do
-  let(:gas) { Gas.new }
-  let(:compressor) { Cycle::Compressor.new gas, 10, 0.87 }
+describe Gtengine::Simple::Compressor do
+  let(:gas) { Gtengine::Gas.new }
+  let(:compressor) { Gtengine::Simple::Compressor.new gas, 10, 0.87 }
 
   it "считает давление выхода" do
     expect(compressor.p_vyh).to eq 1013250.0

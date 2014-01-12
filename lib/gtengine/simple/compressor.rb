@@ -1,14 +1,11 @@
-# coding: utf-8
-require_relative '../gas'
-
-class Cycle::Compressor
+class Gtengine::Simple::Compressor
   attr_accessor :input, :output, :g, :pi_k, :kpd, :average
 
   def initialize input, pi_k, kpd
     @input = input
     @pi_k = pi_k.to_f
     @kpd = kpd.to_f
-    @average = Gas.new input.t.to_f, input.p.to_f
+    @average = Gtengine::Gas.new input.t.to_f, input.p.to_f
     cycle
   end
 
@@ -53,7 +50,7 @@ class Cycle::Compressor
     5.times do
       update_average
     end
-    @output = Gas.new t_vyh, p_vyh
+    @output = Gtengine::Gas.new t_vyh, p_vyh
   end
 
   def info

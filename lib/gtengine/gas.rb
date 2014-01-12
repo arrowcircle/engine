@@ -1,6 +1,4 @@
-# coding: utf-8
-
-class Gas
+class Gtengine::Gas
 
   R = 287.4
   attr_accessor :t, :p, :alfa

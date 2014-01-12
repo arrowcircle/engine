@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Gas do
-  let(:gas) { Gas.new }
+describe Gtengine::Gas do
+  let(:gas) { Gtengine::Gas.new }
 
   it "Считает плотность" do
     expect(gas.density).to eq 1.259133611691023
@@ -26,7 +26,7 @@ describe Gas do
   end
 
   context "HIGH TEMPERATURE" do
-    let(:gas) { Gas.new 900, 1013251 }
+    let(:gas) { Gtengine::Gas.new 900, 1013251 }
 
     it "Считает теплоемкость" do
       expect(gas.cp).to eq 1121.2960248302861

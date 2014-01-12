@@ -1,5 +1,4 @@
-# coding: utf-8
-class Cycle::Burner
+class Gtengine::Simple::Burner
 
   attr_accessor :input, :q_t, :output, :t_g
 
@@ -11,7 +10,7 @@ class Cycle::Burner
   def initialize input, t_g
     @input = input
     @t_g = t_g
-    @output = Gas.new(t_g, @input.p, @input.alfa)
+    @output = Gtengine::Gas.new(t_g, @input.p, @input.alfa)
     cycle
   end
 
@@ -32,7 +31,7 @@ class Cycle::Burner
   end
 
   def cp_mult_t_0
-    Gas.new(T0, 101325.0, 1.0).cp * T0
+    Gtengine::Gas.new(T0, 101325.0, 1.0).cp * T0
   end
 
   def alfa
@@ -47,11 +46,5 @@ class Cycle::Burner
     5.times do
       @output.alfa = alfa
     end
-  end
-
-  def info
-    puts "== Burner"
-    puts "==== q_ks: #{q_ks}, ALFA: #{alfa}"
-    puts
   end
 end
