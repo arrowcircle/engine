@@ -24,10 +24,8 @@ class Gtengine::Simple::Turbine
   end
 
   def pi_t
-    pit = l_k / (1.0 + burner.q_ks)
-    pit /= (t_vh * cp * ETA * ETA_M * (1.0 - G_OHL))
+    pit = (l_k / (1.0 + burner.q_ks)) / (t_vh * cp * ETA * ETA_M * (1.0 - G_OHL))
     pit = (1.0 / (1.0 - pit)) ** ((k - 1.0) / k)
-    pit
   end
 
   def cycle

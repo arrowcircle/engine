@@ -9,9 +9,7 @@ module Gtengine
       attr_accessor :air, :pi_k, :t_g, :compressor, :turbine, :burner
 
       def initialize air=Gas.new(300, 101325), pi_k, t_g
-        @air = air
-        @t_g = t_g
-        @pi_k = pi_k
+        @air, @t_g, @pi_k = air, t_g, pi_k
         init_cycle
       end
 

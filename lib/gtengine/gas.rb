@@ -4,9 +4,7 @@ class Gtengine::Gas
   attr_accessor :t, :p, :alfa
 
   def initialize t = 280.0, p = 101325.0, alfa = 99999999.0
-    @t = t.to_f
-    @p = p.to_f
-    @alfa = alfa
+    @t, @p, @alfa = t.to_f, p.to_f, alfa
   end
 
   def density
