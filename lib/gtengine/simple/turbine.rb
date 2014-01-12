@@ -24,8 +24,7 @@ class Gtengine::Simple::Turbine
   end
 
   def pi_t
-    pit = (l_k / (1.0 + burner.q_ks)) / (t_vh * cp * ETA * ETA_M * (1.0 - G_OHL))
-    pit = (1.0 / (1.0 - pit)) ** ((k - 1.0) / k)
+    (1.0 / (1.0 - temp_pi_t)) ** ((k - 1.0) / k)
   end
 
   def cycle
@@ -64,5 +63,11 @@ class Gtengine::Simple::Turbine
     puts "==== Вход T: #{t_vh.to_i} K, P: #{p_vh.to_i} Па, ALFA: #{input.alfa}, Cp: #{input.cp}"
     puts "==== Выход T: #{@output.t.to_i} K, P: #{@output.p.to_i} Па, , Cp: #{@output.cp}\n\n"
   end
+
+  private
+
+    def temp_pi_t
+      (l_k / (1.0 + burner.q_ks)) / (t_vh * cp * ETA * ETA_M * (1.0 - G_OHL))
+    end
 
 end
