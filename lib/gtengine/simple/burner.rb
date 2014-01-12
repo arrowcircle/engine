@@ -29,7 +29,7 @@ class Gtengine::Simple::Burner
   end
 
   def q_ks
-    (cp_vyh * t_g - cp_vh * t_vh - (cp_vyh - cp_vh) * T0) / (QN * ETA_G - (cp_vyh * t_g - cp_mult_t_0))
+    upper_q_ks / lower_q_ks
   end
 
   def cp_mult_t_0
@@ -54,4 +54,14 @@ class Gtengine::Simple::Burner
     puts "==== Вход T: #{@input.t.to_i} K, P: #{@input.p.to_i} Па"
     puts "==== Выход T: #{@output.t.to_i} K, P: #{@output.p.to_i} Па\n\n"
   end
+
+  private
+
+    def upper_q_ks
+      (cp_vyh * t_g - cp_vh * t_vh - (cp_vyh - cp_vh) * T0)
+    end
+
+    def lower_q_ks
+      (QN * ETA_G - (cp_vyh * t_g - cp_mult_t_0))
+    end
 end
