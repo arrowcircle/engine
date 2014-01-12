@@ -1,4 +1,4 @@
-source "http://rubygems.org"
+source 'http://rubygems.org'
 
-gem 'rspec'
-gem 'guard-rspec'
+# Specify your gem's dependencies in gtengine.gemspec
+gemspec
