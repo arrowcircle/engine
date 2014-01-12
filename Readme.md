@@ -1,4 +1,5 @@
-[![Build Status](NOTE: Use something like Travis CI http://about.travis-ci.org/docs/user/getting-started/)
+[![Build Status](https://travis-ci.org/arrowcircle/engine.png?branch=master)](https://travis-ci.org/arrowcircle/engine)
+[![Code Climate](https://codeclimate.com/github/arrowcircle/engine.png)](https://codeclimate.com/github/arrowcircle/engine)
 
 # GTEngine
 
