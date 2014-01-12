@@ -6,11 +6,18 @@ Math models of gas turbine engine and its parts made with ruby language
 
 ## Usage
 
+Add gem to your gemfile
+
+    gem 'gtengine'
+
+and run
+
+    bundle
+
 ### Simple
 
 For simple parts calculation:
 
-    require_relative 'lib/gtengine'
     gas = Gtengine::Gas.new 300, 101325
 
     k = Gtengine::Simple::Compressor.new gas, 4.5, 0.85
