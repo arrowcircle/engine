@@ -8,9 +8,7 @@ class Gtengine::Simple::Burner
   L0 = 14.7
 
   def initialize input, t_g
-    @input = input
-    @t_g = t_g
-    @output = Gtengine::Gas.new(t_g, @input.p, @input.alfa)
+    @input, @t_g = input, t_g
     cycle
   end
 
@@ -24,6 +22,10 @@ class Gtengine::Simple::Burner
 
   def t_vh
     @input.t
+  end
+
+  def p_vh
+    @input.p
   end
 
   def q_ks
@@ -43,8 +45,13 @@ class Gtengine::Simple::Burner
   end
 
   def cycle
-    5.times do
-      @output.alfa = alfa
-    end
+    @output = Gtengine::Gas.new(t_g, p_vh, input.alfa)
+    5.times { @output.alfa = alfa }
+  end
+
+  def info
+    puts "== Burner q_ks: #{q_ks}, ALFA: #{alfa}"
+    puts "==== Вход T: #{@input.t.to_i} K, P: #{@input.p.to_i} Па"
+    puts "==== Выход T: #{@output.t.to_i} K, P: #{@output.p.to_i} Па\n\n"
   end
 end

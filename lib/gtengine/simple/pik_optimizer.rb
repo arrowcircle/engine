@@ -2,23 +2,23 @@ class Gtengine::Simple::PikOptimizer
   attr_accessor :start_pik, :end_pik, :t_g, :step, :optimum, :cycles, :air
 
   def initialize air, start_pik, end_pik, t_g, step=1
-    @air = air
-    @start_pik = start_pik
-    @end_pik = end_pik
-    @t_g = t_g
-    @step = step
+    @air, @start_pik, @end_pik, @t_g, @step = air, start_pik, end_pik, t_g, step
     optimize
   end
 
   def optimize
     @cycles = []
     Range.new(start_pik, end_pik).step(step).each do |pik|
-      begin
-        c = Cycle.new(air, pik, t_g) 
-        @cycles << c if c.burner.q_ks
-      rescue
-        
-      end
+      calc_result(pik)
+    end
+  end
+
+  def calc_result(pik)
+    begin
+      c = Gtengine::Simple::Cycle.new(air, pik, t_g) 
+      @cycles << c if c.burner.q_ks
+    rescue
+      
     end
   end
 

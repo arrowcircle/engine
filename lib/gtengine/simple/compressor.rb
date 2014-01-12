@@ -2,10 +2,7 @@ class Gtengine::Simple::Compressor
   attr_accessor :input, :output, :g, :pi_k, :kpd, :average
 
   def initialize input, pi_k, kpd
-    @input = input
-    @pi_k = pi_k.to_f
-    @kpd = kpd.to_f
-    @average = Gtengine::Gas.new input.t.to_f, input.p.to_f
+    @input, @pi_k, @kpd = input, pi_k.to_f, kpd.to_f
     cycle
   end
 
@@ -47,19 +44,15 @@ class Gtengine::Simple::Compressor
   end
 
   def cycle
-    5.times do
-      update_average
-    end
+    @average = Gtengine::Gas.new input.t.to_f, input.p.to_f
+    5.times { update_average }
     @output = Gtengine::Gas.new t_vyh, p_vyh
   end
 
   def info
-    puts "== Compressor"
-    puts "==== Pi_k: #{@pi_k}, КДП: #{@kpd}"
+    puts "== Compressor Pi_k: #{@pi_k}, КДП: #{@kpd}, Cp_sr: #{cp}, K: #{k}"
     puts "==== Вход T: #{@input.t.to_i} K, P: #{@input.p.to_i} Па"
-    puts "====== Cp_sr: #{cp}, K: #{k}"
-    puts "==== Выход T: #{@output.t.to_i} K, P: #{@output.p.to_i} Па, ALFA: #{alfa}"
-    puts
+    puts "==== Выход T: #{@output.t.to_i} K, P: #{@output.p.to_i} Па, ALFA: #{alfa}\n\n"
   end
 
 end

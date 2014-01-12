@@ -7,10 +7,7 @@ class Gtengine::Simple::Turbine
   G_OHL = 0.001
 
   def initialize burner, l_k, kpd = 0.9
-    @burner = burner
-    @l_k = l_k
-    @kpd = kpd.to_f
-    @average = Gtengine::Gas.new t_vh, p_vh
+    @burner, @l_k, @kpd = burner, l_k, kpd.to_f
     cycle
   end
 
@@ -34,9 +31,8 @@ class Gtengine::Simple::Turbine
   end
 
   def cycle
-    5.times do
-      update_average
-    end
+    @average = Gtengine::Gas.new t_vh, p_vh
+    5.times { update_average }
     @output = Gtengine::Gas.new t_vyh, p_vyh
   end
 
@@ -66,12 +62,9 @@ class Gtengine::Simple::Turbine
   end
 
   def info
-    puts "== Turbine"
-    puts "==== Pi_t: #{pi_t}, КДП: #{ETA}"
+    puts "== Turbine Cp_sr: #{cp}, K: #{k}, Pi_t: #{pi_t}, КДП: #{ETA}"
     puts "==== Вход T: #{t_vh.to_i} K, P: #{p_vh.to_i} Па, ALFA: #{input.alfa}, Cp: #{input.cp}"
-    puts "====== Cp_sr: #{cp}, K: #{k}"
-    puts "==== Выход T: #{@output.t.to_i} K, P: #{@output.p.to_i} Па, , Cp: #{@output.cp}"
-    puts
+    puts "==== Выход T: #{@output.t.to_i} K, P: #{@output.p.to_i} Па, , Cp: #{@output.cp}\n\n"
   end
 
 end

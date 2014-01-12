@@ -10,10 +10,15 @@ module Gtengine
 
       def initialize air=Gas.new(300, 101325), pi_k, t_g
         @air = air
+        @t_g = t_g
         @pi_k = pi_k
+        init_cycle
+      end
+
+      def init_cycle
         @compressor = Compressor.new air, pi_k, 0.85
         @burner = Burner.new @compressor.output, t_g
-        @turbine = Turbine.new @burner, @compressor.l_k, 0.9
+        @turbine = Turbine.new burner, compressor.l_k, 0.9
       end
 
       def q_ks
