@@ -1,31 +1,33 @@
 class Gtengine::Simple::Burner
+  attr_accessor :input, :q_t, :output, :t_g, :options
 
-  attr_accessor :input, :q_t, :output, :t_g
+  DEFAULTS = {
+    t_0: 288.3,
+    q_n: 43000000.0,
+    eta_g: 0.985,
+    l_0: 14.7
+  }
 
-  T0 = 288.3
-  QN = 43000000.0
-  ETA_G = 0.985
-  L0 = 14.7
-
-  def initialize input, t_g
+  def initialize(input, t_g, options = {})
     @input, @t_g = input, t_g
+    @options = DEFAULTS.merge(options)
     cycle
   end
 
   def cp_vh
-    @input.cp
+    input.cp
   end
 
   def cp_vyh
-    @output.cp
+    output.cp
   end
 
   def t_vh
-    @input.t
+    input.t
   end
 
   def p_vh
-    @input.p
+    input.p
   end
 
   def q_ks
@@ -33,12 +35,12 @@ class Gtengine::Simple::Burner
   end
 
   def cp_mult_t_0
-    Gtengine::Gas.new(T0, 101325.0, 1.0).cp * T0
+    Gtengine::Gas.new(t_0, 101325.0, 1.0).cp * t_0
   end
 
   def alfa
     begin
-      1.0 / (q_ks * L0)
+      1.0 / (q_ks * l_0)
     rescue
       999999999.0
     end
@@ -49,6 +51,22 @@ class Gtengine::Simple::Burner
     5.times { @output.alfa = alfa }
   end
 
+  def t_0
+    options[:t_0]
+  end
+
+  def l_0
+    options[:l_0]
+  end
+
+  def eta_g
+    options[:eta_g]
+  end
+
+  def q_n
+    options[:q_n]
+  end
+
   def info
     puts "== Burner q_ks: #{q_ks}, ALFA: #{alfa}"
     puts "==== Вход T: #{@input.t.to_i} K, P: #{@input.p.to_i} Па"
@@ -57,11 +75,11 @@ class Gtengine::Simple::Burner
 
   private
 
-    def upper_q_ks
-      (cp_vyh * t_g - cp_vh * t_vh - (cp_vyh - cp_vh) * T0)
-    end
+  def upper_q_ks
+    (cp_vyh * t_g - cp_vh * t_vh - (cp_vyh - cp_vh) * t_0)
+  end
 
-    def lower_q_ks
-      (QN * ETA_G - (cp_vyh * t_g - cp_mult_t_0))
-    end
+  def lower_q_ks
+    (q_n * eta_g - (cp_vyh * t_g - cp_mult_t_0))
+  end
 end

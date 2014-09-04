@@ -1,18 +1,37 @@
 class Gtengine::Simple::Turbine
+  attr_accessor :burner, :l_k, :average, :output, :options
 
-  attr_accessor :burner, :l_k, :kpd, :average, :output
+  DEFAULTS = {
+    eta: 0.9,
+    eta_m: 0.985,
+    g_ohl: 0.001,
+    kpd: 0.9
+  }
 
-  ETA = 0.9
-  ETA_M = 0.985
-  G_OHL = 0.001
-
-  def initialize burner, l_k, kpd = 0.9
-    @burner, @l_k, @kpd = burner, l_k, kpd.to_f
+  def initialize(burner, l_k, options = {})
+    @burner, @l_k = burner, l_k
+    @options = DEFAULTS.merge(options)
     cycle
   end
 
   def input
-    @burner.output
+    burner.output
+  end
+
+  def kpd
+    options[:kpd]
+  end
+
+  def g_ohl
+    options[:g_ohl]
+  end
+
+  def eta_m
+    options[:eta_m]
+  end
+
+  def eta
+    options[:eta]
   end
 
   def t_vh
@@ -28,9 +47,9 @@ class Gtengine::Simple::Turbine
   end
 
   def cycle
-    @average = Gtengine::Gas.new t_vh, p_vh
+    @average = Gtengine::Gas.new(t_vh, p_vh)
     5.times { update_average }
-    @output = Gtengine::Gas.new t_vyh, p_vyh
+    @output = Gtengine::Gas.new(t_vyh, p_vyh)
   end
 
   def update_average
@@ -51,23 +70,22 @@ class Gtengine::Simple::Turbine
   end
 
   def k
-    @average.average_k
+    average.average_k
   end
 
   def cp
-    @average.average_cp
+    average.average_cp
   end
 
   def info
     puts "== Turbine Cp_sr: #{cp}, K: #{k}, Pi_t: #{pi_t}, КДП: #{ETA}"
     puts "==== Вход T: #{t_vh.to_i} K, P: #{p_vh.to_i} Па, ALFA: #{input.alfa}, Cp: #{input.cp}"
-    puts "==== Выход T: #{@output.t.to_i} K, P: #{@output.p.to_i} Па, , Cp: #{@output.cp}\n\n"
+    puts "==== Выход T: #{output.t.to_i} K, P: #{output.p.to_i} Па, , Cp: #{output.cp}\n\n"
   end
 
   private
 
-    def temp_pi_t
-      (l_k / (1.0 + burner.q_ks)) / (t_vh * cp * ETA * ETA_M * (1.0 - G_OHL))
-    end
-
+  def temp_pi_t
+    (l_k / (1.0 + burner.q_ks)) / (t_vh * cp * eta * eta_m * (1.0 - g_ohl))
+  end
 end
