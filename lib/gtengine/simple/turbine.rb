@@ -78,7 +78,7 @@ class Gtengine::Simple::Turbine
   end
 
   def info
-    puts "== Turbine Cp_sr: #{cp}, K: #{k}, Pi_t: #{pi_t}, КДП: #{ETA}"
+    puts "== Turbine Cp_sr: #{cp}, K: #{k}, Pi_t: #{pi_t}, КДП: #{eta}"
     puts "==== Вход T: #{t_vh.to_i} K, P: #{p_vh.to_i} Па, ALFA: #{input.alfa}, Cp: #{input.cp}"
     puts "==== Выход T: #{output.t.to_i} K, P: #{output.p.to_i} Па, , Cp: #{output.cp}\n\n"
   end
