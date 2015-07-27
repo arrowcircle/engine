@@ -18,4 +18,6 @@ tmp
 
 # Custom ignores
 /.rvmrc
+/.ruby-version
+/.ruby-gemset
 /gogo.rb

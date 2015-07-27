@@ -1,4 +1,5 @@
 class Gtengine::Simple::Burner
+  include Gtengine::Defaults
   attr_accessor :input, :q_t, :output, :t_g, :options
 
   DEFAULTS = {
@@ -49,22 +50,6 @@ class Gtengine::Simple::Burner
   def cycle
     @output = Gtengine::Gas.new(t_g, p_vh, input.alfa)
     5.times { @output.alfa = alfa }
-  end
-
-  def t_0
-    options[:t_0]
-  end
-
-  def l_0
-    options[:l_0]
-  end
-
-  def eta_g
-    options[:eta_g]
-  end
-
-  def q_n
-    options[:q_n]
   end
 
   def info

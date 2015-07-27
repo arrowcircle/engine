@@ -1,4 +1,5 @@
 require 'gtengine/version'
+require 'gtengine/defaults'
 require 'gtengine/gas'
 require 'gtengine/simple_cycle'
 

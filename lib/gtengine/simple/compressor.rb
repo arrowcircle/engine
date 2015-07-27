@@ -1,4 +1,5 @@
 class Gtengine::Simple::Compressor
+  include Gtengine::Defaults
   attr_accessor :input, :output, :g, :pi_k, :average, :options
 
   DEFAULTS = {
@@ -9,10 +10,6 @@ class Gtengine::Simple::Compressor
     @input, @pi_k = input, pi_k.to_f
     @options = DEFAULTS.merge(options)
     cycle
-  end
-
-  def kpd
-    options[:kpd]
   end
 
   def t_vyh

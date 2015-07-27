@@ -1,4 +1,5 @@
 class Gtengine::Simple::Turbine
+  include Gtengine::Defaults
   attr_accessor :burner, :l_k, :average, :output, :options
 
   DEFAULTS = {
@@ -16,22 +17,6 @@ class Gtengine::Simple::Turbine
 
   def input
     burner.output
-  end
-
-  def kpd
-    options[:kpd]
-  end
-
-  def g_ohl
-    options[:g_ohl]
-  end
-
-  def eta_m
-    options[:eta_m]
-  end
-
-  def eta
-    options[:eta]
   end
 
   def t_vh
