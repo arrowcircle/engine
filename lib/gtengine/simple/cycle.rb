@@ -1,10 +1,9 @@
 module Gtengine
   module Simple
     class Cycle
-      require_relative 'simple/turbine'
-      require_relative 'simple/compressor'
-      require_relative 'simple/burner'
-      require_relative 'simple/pik_optimizer'
+      require_relative 'turbine'
+      require_relative 'compressor'
+      require_relative 'burner'
 
       attr_accessor :air, :pi_k, :t_g, :compressor, :turbine, :burner
 

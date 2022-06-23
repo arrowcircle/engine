@@ -4,6 +4,14 @@
 
 Math models of gas turbine engine and its parts made with ruby language
 
+## Inspiration
+
+https://proptools.readthedocs.io/
+https://github.com/MRod5/pyturb
+https://github.com/aseylys/CompPy
+https://github.com/GTSL-UC/PY-C-DES
+!!! https://tespy.readthedocs.io/en/dev/_modules/tespy/components/turbomachinery/compressor.html
+
 ## Usage
 
 Add gem to your gemfile
